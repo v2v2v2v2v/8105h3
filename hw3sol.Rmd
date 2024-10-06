@@ -10,8 +10,25 @@ library()
 ```
 
 ```{R}
-covar= read_csv("nhanes_covar.csv")
+#Q2
+covar= read_csv("nhanes_covar.csv", skip = 4) |>
+  janitor::clean_names() |>
+  mutate(age = as.integer(age)) |>
+  mutate(sex = case_when(
+    sex == 1 ~ "male",
+    sex == 2 ~ "female"
+  )) |>
+  mutate(education = case_when(
+    education == 1 ~ "<HS",
+    education == 2 ~ "=HS",
+    education == 3 ~ ">HS"
+  )) |>
+  filter(age>20) |>
+  drop_na(sex, age)
+covar
 accel = read_csv("nhanes_accel.csv")
+covar
+accel
 ```
 
 
