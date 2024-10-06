@@ -36,22 +36,42 @@ ggplot(covar, aes(x = age, fill = sex)) +
   labs(title = "Age Distribution by Gender and Education Level",
        x = "Age",
        y = "Count")
-accel = read_csv("nhanes_accel.csv")
-covar
+
+
+accel = read_csv("nhanes_accel.csv") |>
+  janitor::clean_names()
 accel
+covar_accel = merge(covar, accel, by = "seqn", all =TRUE) |>
+  drop_na(sex, age)
+covar_accel
 ```
 
 
 
 ```{R}
 #Q3 citibike
-jan20 = read_csv("Jan2020Citi.csv")
-jan24 = read_csv("Jan2024Citi.csv")
-Jul20 = read_csv("July2020Citi.csv")
-Jul24 = read_csv("July2024Citi.csv")
-jan20
-
-
+jan20 = read_csv("Jan2020Citi.csv") |>
+  janitor::clean_names() |>
+  mutate(time = "Jan2020")
+jan24 = read_csv("Jan2024Citi.csv") |>
+  janitor::clean_names() |>
+  mutate(time = "Jan2024")
+jul20 = read_csv("July2020Citi.csv") |>
+  janitor::clean_names() |>
+  mutate(time = "Jul2020")
+jul24 = read_csv("July2024Citi.csv") |>
+  janitor::clean_names() |>
+  mutate(time = "Jul2024")
+names(jul24)
+names(jan24)
+df_list <- list(jan20, jul20, jan24, jul24)
+merged_df <- df_list %>% 
+  reduce(full_join, by = names(jan20))
+merged_df
+table1 = merged_df |>
+  group_by(time, member_casual) |>
+  summarize(total = n())
+table1
 ```
 
 
