@@ -65,8 +65,18 @@ jul24 = read_csv("July2024Citi.csv") |>
 names(jul24)
 names(jan24)
 df_list <- list(jan20, jul20, jan24, jul24)
-citi_merged <- df_list %>% 
-  reduce(full_join, by = names(jan20))
+citi_merged = df_list |>
+  reduce(full_join, by = names(jan20)) |>
+  mutate(weekdays = case_when(
+    weekdays == "Monday" ~ "Mon",
+    weekdays == "Tuesday" ~ "Tues",
+    weekdays == "Wednesday" ~ "Wed",
+    weekdays == "Thursday" ~ "Thurs",
+    weekdays == "Friday" ~ "Fri",
+    weekdays == "Saturday" ~ "Sat",
+    weekdays == "Sunday" ~ "Sun"
+  ))
+
 citi_merged
 table1 = citi_merged |>
   group_by(time, member_casual) |>
@@ -88,6 +98,17 @@ ggplot(plot_data, aes(x = weekdays, y = median_duration, color = as.factor(year)
        x = "Day of the Week",
        y = "Median Ride Duration (minutes)",
        color = "Year")
+data_2024 = citi_merged |>
+  separate(time, into = c("month", "year"), sep = " ") |>
+  filter(year == 2024)
+data_2024
+ggplot(data_2024, aes(x = month, y = duration, fill = member_casual)) +
+  geom_boxplot() +
+  facet_wrap(~ rideable_type) +
+  labs(title = "Impact of Month, Membership Status, and Bike Type on Ride Duration",
+       x = "Month",
+       y = "Ride Duration (minutes)",
+       fill = "Membership Status")
 ```
 
 
