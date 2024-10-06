@@ -52,26 +52,42 @@ covar_accel
 #Q3 citibike
 jan20 = read_csv("Jan2020Citi.csv") |>
   janitor::clean_names() |>
-  mutate(time = "Jan2020")
+  mutate(time = "Jan 2020")
 jan24 = read_csv("Jan2024Citi.csv") |>
   janitor::clean_names() |>
-  mutate(time = "Jan2024")
+  mutate(time = "Jan 2024")
 jul20 = read_csv("July2020Citi.csv") |>
   janitor::clean_names() |>
-  mutate(time = "Jul2020")
+  mutate(time = "Jul 2020")
 jul24 = read_csv("July2024Citi.csv") |>
   janitor::clean_names() |>
-  mutate(time = "Jul2024")
+  mutate(time = "Jul 2024")
 names(jul24)
 names(jan24)
 df_list <- list(jan20, jul20, jan24, jul24)
-merged_df <- df_list %>% 
+citi_merged <- df_list %>% 
   reduce(full_join, by = names(jan20))
-merged_df
-table1 = merged_df |>
+citi_merged
+table1 = citi_merged |>
   group_by(time, member_casual) |>
   summarize(total = n())
 table1
+table2 = jul24 |>
+  group_by(start_station_name) |>
+  summarize(total = n())
+head(table2, 5) #to get the 5 most popular starting stations
+plot_data = citi_merged |>
+  separate(time, into = c("month", "year"), sep = " ") |>
+  group_by(weekdays, month, year) |>
+  summarize(median_duration = median(duration, na.rm = TRUE))
+plot_data
+ggplot(plot_data, aes(x = weekdays, y = median_duration, color = as.factor(year))) +
+  geom_point() +
+  facet_wrap(~ month) +
+  labs(title = "Median Ride Duration by Day of the Week, Month, and Year",
+       x = "Day of the Week",
+       y = "Median Ride Duration (minutes)",
+       color = "Year")
 ```
 
 
