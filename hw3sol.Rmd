@@ -91,16 +91,3 @@ ggplot(plot_data, aes(x = weekdays, y = median_duration, color = as.factor(year)
 ```
 
 
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
