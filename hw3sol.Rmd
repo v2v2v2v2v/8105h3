@@ -6,7 +6,7 @@ date: "2024-10-05"
 ```{R}
 library(readxl)
 library(tidyverse)
-library()
+library(ggplot2)
 ```
 
 ```{R}
@@ -26,6 +26,16 @@ covar= read_csv("nhanes_covar.csv", skip = 4) |>
   filter(age>20) |>
   drop_na(sex, age)
 covar
+sex_edu_covar = covar |>
+  group_by(sex, education) |>
+  summarize(total = n())
+sex_edu_covar
+ggplot(covar, aes(x = age, fill = sex)) +
+  geom_histogram(binwidth = 5, position = "dodge") +
+  facet_wrap(~ education) +
+  labs(title = "Age Distribution by Gender and Education Level",
+       x = "Age",
+       y = "Count")
 accel = read_csv("nhanes_accel.csv")
 covar
 accel
