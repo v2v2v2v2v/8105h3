@@ -110,7 +110,8 @@ ggplot(data_2024, aes(x = month, y = duration, fill = member_casual)) +
        y = "Ride Duration (minutes)",
        fill = "Membership Status")
 ```
-Fo For classic bikes we see that January and July do not show a lot of differences. The box plots are pretty similar for both casual users and members. 
+For classic bikes we see that January and July do not show a lot of differences. The box plots are pretty similar for both casual users and members. 
 However, in electric bikes there are some difference between the two months. The ride duration was more in July (for both members and casual users) compared to January. This can be seen by the fact that the boxes are slightly bigger and the median is higher when compared to their counterparts.
 We also see that irrespective of the month and type of bike, casual users use the rideable for a longer time than members which is explained by the median of orange boxes being higher than the blue boxes.
+It is hard to comment on whether classic bikes or electric bikes are used for longer duration. Observing the box plot we can say that classic bikes might be used for slightly longer ride duration.
 
