@@ -77,8 +77,15 @@ citi_merged = df_list |>
     weekdays == "Saturday" ~ "Sat",
     weekdays == "Sunday" ~ "Sun")) |>
    mutate(weekdays = factor(weekdays, levels = c("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")))
-  
 citi_merged
+str(citi_merged)
+summary(citi_merged)
+```
+
+Q- describe the resulting dataset
+Ans- We have a dataset with 8 columns. 99,485 rows. Duration is a number while weekdays have been set as a factor. The other variables have been set as characters. The dataset describes the details (time, duration, destination etc.) of the rides taken by someone in NYC via a citibike. The dataset, str() and summary() commands allow us to know more about the data and the details provided.
+
+```{R}
 table1 = citi_merged |>
   group_by(time, member_casual) |>
   summarize(total = n()) |>
