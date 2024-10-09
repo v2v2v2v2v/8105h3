@@ -81,12 +81,23 @@ citi_merged = df_list |>
 citi_merged
 table1 = citi_merged |>
   group_by(time, member_casual) |>
-  summarize(total = n())
+  summarize(total = n()) |>
+  arrange(total)
 table1
+```
+
+Q- Produce a reader-friendly table showing the total number of rides in each combination of year and month separating casual riders and Citi Bike members. Comment on these results.
+Ans- Going off the total number of rides, in Jan 2020- the total casual rides were the least while July 2024 recorded the highest. The same is true for members.The fact that January is lower than July is pretty understandable considering the weather of NYC (cold winters). Even the latest number of rides (July 2024) for casual users was less in total than Citibike members. The proportion of members:users when considering rides has been decreasing over the years as there were 10 times members rides to casual users rides which is not around 3 times.
+
+
+```{R}
 table2 = jul24 |>
   group_by(start_station_name) |>
   summarize(total = n())
 head(table2, 5) #to get the 5 most popular starting stations
+```
+
+```{R}
 plot_data = citi_merged |>
   separate(time, into = c("month", "year"), sep = " ") |>
   group_by(weekdays, month, year) |>
