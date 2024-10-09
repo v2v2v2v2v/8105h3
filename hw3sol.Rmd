@@ -67,6 +67,7 @@ names(jan24)
 df_list <- list(jan20, jul20, jan24, jul24)
 citi_merged = df_list |>
   reduce(full_join, by = names(jan20)) |>
+  mutate(weekdays = as.character(weekdays)) |>
   mutate(weekdays = case_when(
     weekdays == "Monday" ~ "Mon",
     weekdays == "Tuesday" ~ "Tues",
@@ -74,9 +75,9 @@ citi_merged = df_list |>
     weekdays == "Thursday" ~ "Thurs",
     weekdays == "Friday" ~ "Fri",
     weekdays == "Saturday" ~ "Sat",
-    weekdays == "Sunday" ~ "Sun"
-  ))
-
+    weekdays == "Sunday" ~ "Sun")) |>
+   mutate(weekdays = factor(weekdays, levels = c("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun")))
+  
 citi_merged
 table1 = citi_merged |>
   group_by(time, member_casual) |>
@@ -98,6 +99,15 @@ ggplot(plot_data, aes(x = weekdays, y = median_duration, color = as.factor(year)
        x = "Day of the Week",
        y = "Median Ride Duration (minutes)",
        color = "Year")
+```
+Q- Make a plot to investigate the effects of day of the week, month, and year on median ride duration. This plot can include one or more panels, but should facilitate comparison across all variables of interest. Comment on your observations from this plot.
+
+Ans- In 2020, the median duration of how long a bike was used was more than in 2024 for both months especially in July. 
+Seeing the days of the week, we find that the median duration time of the bikes during the weekend decreased quite a bit in 2024 when compared to 2020.This decrease is more profound in July than January.Also for other days, the median duration is less in 2024 than 2020 with bigger difference in July. Something different about the weekend is that Saturdays and Sundays have similar duration in 2020 for both months. However, the duration for Sundays decreases more than Saturdays in 2024.
+
+
+
+```{R}
 data_2024 = citi_merged |>
   separate(time, into = c("month", "year"), sep = " ") |>
   filter(year == 2024)
@@ -110,7 +120,9 @@ ggplot(data_2024, aes(x = month, y = duration, fill = member_casual)) +
        y = "Ride Duration (minutes)",
        fill = "Membership Status")
 ```
-For classic bikes we see that January and July do not show a lot of differences. The box plots are pretty similar for both casual users and members. 
+Q- For data in 2024, make a figure that shows the impact of month, membership status, and bike type on the distribution of ride duration. Comment on your results
+
+Ans- For classic bikes we see that January and July do not show a lot of differences. The box plots are pretty similar for both casual users and members. 
 However, in electric bikes there are some difference between the two months. The ride duration was more in July (for both members and casual users) compared to January. This can be seen by the fact that the boxes are slightly bigger and the median is higher when compared to their counterparts.
 We also see that irrespective of the month and type of bike, casual users use the rideable for a longer time than members which is explained by the median of orange boxes being higher than the blue boxes.
 It is hard to comment on whether classic bikes or electric bikes are used for longer duration. Observing the box plot we can say that classic bikes might be used for slightly longer ride duration.
