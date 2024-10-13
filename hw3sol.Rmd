@@ -23,10 +23,11 @@ covar= read_csv("nhanes_covar.csv", skip = 4) |>
     education == 2 ~ "=HS",
     education == 3 ~ ">HS"
   )) |>
+  mutate(education = as.factor(education)) |>
   filter(age>20) |>
   drop_na(sex, age)
 covar
-sex_edu_covar = covar |>
+sex_edu_covar = covar |>  #creating the table
   group_by(sex, education) |>
   summarize(total = n())
 sex_edu_covar
@@ -36,7 +37,13 @@ ggplot(covar, aes(x = age, fill = sex)) +
   labs(title = "Age Distribution by Gender and Education Level",
        x = "Age",
        y = "Count")
+```
 
+Q- Produce a reader-friendly table for the number of men and women in each education category, and create a visualization of the age distributions for men and women in each education category. Comment on these items.
+Ans- In the table we have created that shows the number of men and women in each education category, we observe that the less than high school and more than high school numbers are pretty similar for both the sexes (slightly more females in both categories). However, there is a significant difference in the number of men with high school equivalent education than women. It is also important to note that in our tidied dataset the number of men is more than the number of women (120 vs 111).
+
+
+```{R}
 
 accel = read_csv("nhanes_accel.csv") |>
   janitor::clean_names()
