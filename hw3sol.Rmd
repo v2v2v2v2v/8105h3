@@ -46,8 +46,18 @@ Ans- In the table we have created that shows the number of men and women in each
 ```{R}
 
 accel = read_csv("nhanes_accel.csv") |>
-  janitor::clean_names()
+  janitor::clean_names() |>
+  mutate_all(as.double)|>
+  rowwise() |>
+  mutate(total_activity = sum(c_across(-1)))
+accel_t = accel |>
+  select(seqn, total_activity)
+accel_t
 accel
+str(accel)
+```
+
+```{R}
 covar_accel = merge(covar, accel, by = "seqn", all =TRUE) |>
   drop_na(sex, age)
 covar_accel
