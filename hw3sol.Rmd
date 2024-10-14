@@ -49,9 +49,10 @@ accel = read_csv("nhanes_accel.csv") |>
   janitor::clean_names() |>
   mutate_all(as.double)|>
   rowwise() |>
-  mutate(total_activity = sum(c_across(-1)))
+  mutate(total_activity = sum(c_across(-1))) |>
+  mutate(avg_activity = total_activity/1440)
 accel_t = accel |>
-  select(seqn, total_activity)
+  select(seqn, total_activity, avg_activity)
 accel_t
 accel
 str(accel)
