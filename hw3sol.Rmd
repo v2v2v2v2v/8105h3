@@ -59,9 +59,15 @@ str(accel)
 ```
 
 ```{R}
-covar_accel = merge(covar, accel, by = "seqn", all =TRUE) |>
+covar_accel = merge(covar, accel_t, by = "seqn", all =TRUE) |>
   drop_na(sex, age)
 covar_accel
+ggplot(covar_accel, aes(x = age, y = total_activity)) +
+  geom_line() +
+  facet_wrap(~ education + sex) +
+  labs(title = "Age of person and their total activities",
+       x = "Age",
+       y = "Total Activities")
 ```
 
 
