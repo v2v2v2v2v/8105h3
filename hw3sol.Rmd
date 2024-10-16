@@ -59,18 +59,47 @@ str(accel)
 ```
 
 ```{R}
-covar_accel = merge(covar, accel_t, by = "seqn", all =TRUE) |>
+covar_accel = merge(covar, accel, by = "seqn", all =TRUE) |>
   drop_na(sex, age)
 covar_accel
-ggplot(covar_accel, aes(x = age, y = total_activity)) +
-  geom_line() +
-  facet_wrap(~ education + sex) +
+ggplot(covar_accel, aes(x = age, y = total_activity, color = sex)) +
+  geom_point(alpha = 0.5) + # Add points with some transparency
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ education) +
   labs(title = "Age of person and their total activities",
        x = "Age",
        y = "Total Activities")
 ```
 
+```{R}
+covar_accel_long <- covar_accel |>
+  pivot_longer(cols = starts_with("min"), 
+               names_to = "minute", 
+               names_prefix = "min", 
+               values_to = "activity_level")|>
+  mutate(minute = as.numeric(minute))
+covar_accel_long
 
+df_hourly = covar_accel_long |>
+  mutate(hour = floor((minute - 1) / 60) + 1) |> # Ensure minute to hour conversion
+  group_by(education, sex, hour) |>
+  summarise(activity_level = mean(activity_level, na.rm = TRUE)) |>
+  ungroup()
+
+df_hourly
+
+ggplot(df_hourly, aes(x = hour, y = activity_level, color = sex)) +
+  geom_point(alpha = 0.5) +  
+  geom_smooth(method = "lm", se = FALSE) + 
+  facet_wrap(~ education, ncol = 1) + 
+  labs(title = "24-hour Activity Time Courses",
+       x = "Hour",
+       y = "Activity Level",
+       color = "Sex") +
+  theme_minimal()
+```
+
+Q-  Make a three-panel plot that shows the 24-hour activity time courses for each education level and use color to indicate sex. Describe in words any patterns or conclusions you can make based on this graph; including smooth trends may help identify differences.
 
 ```{R}
 #Q3 citibike
