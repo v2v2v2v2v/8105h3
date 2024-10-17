@@ -39,8 +39,15 @@ ggplot(covar, aes(x = age, fill = sex)) +
        y = "Count")
 ```
 
-Q- Produce a reader-friendly table for the number of men and women in each education category, and create a visualization of the age distributions for men and women in each education category. Comment on these items.
-Ans- In the table we have created that shows the number of men and women in each education category, we observe that the less than high school and more than high school numbers are pretty similar for both the sexes (slightly more females in both categories). However, there is a significant difference in the number of men with high school equivalent education than women. It is also important to note that in our tidied dataset the number of men is more than the number of women (120 vs 111).
+Q- Produce a reader-friendly table for the number of men and women in each education
+category, and create a visualization of the age distributions for men and women in each
+education category. Comment on these items.
+Ans- In the table we have created that shows the number of men and women in each
+education category, we observe that the less than high school and more than high school
+numbers are pretty similar for both the sexes (slightly more females in both categories).
+However, there is a significant difference in the number of men with high school
+equivalent education than women. It is also important to note that in our tidied dataset
+the number of men is more than the number of women (120 vs 111).
 
 
 ```{R}
@@ -57,8 +64,8 @@ accel_t = accel |>
 
 ```{R}
 covar_accel = merge(covar, accel, by = "seqn", all =TRUE) |>
-  drop_na(sex, age)
-covar_accel
+  drop_na(sex, age, bmi, education)
+covar_accel #final merged dataset with all required information
 ggplot(covar_accel, aes(x = age, y = total_activity, color = sex)) +
   geom_point(alpha = 0.5) + # Add points with some transparency
   geom_smooth(method = "lm", se = FALSE) +
@@ -67,11 +74,19 @@ ggplot(covar_accel, aes(x = age, y = total_activity, color = sex)) +
        x = "Age",
        y = "Total Activities")
 ```
-Q- Plot these total activities (y-axis) against age (x-axis); your plot should compare men to women and have separate panels for each education level. Include a trend line or a smooth to illustrate differences. Comment on your plot.
 
-Ans- The trend lines in the above plot give us some information (as the points are too scattered). For = and >HS education level the female total activity is more than the male. However, at the HS equivalent level there is a larger difference in the sexes among the younger demographic whereas at the >HS education level the difference is more prominent at older ages. The <HS education level has a higher female total activity level at the first but somewhere around the age of 40-50 the total activity levels for both sexes become the same and thereafter, the male total activity level is higher. The total activity level starts off higher for the younger ages and the <HS level has the greatest difference between younger and older people while the >HS has the least.
-
-
+Q- Plot these total activities (y-axis) against age (x-axis); your plot should compare
+men to women and have separate panels for each education level. Include a trend line or a
+smooth to illustrate differences. Comment on your plot.
+Ans- The trend lines in the above plot give us some information (as the points are too
+scattered). For = and >HS education level the female total activity is more than the
+male. However, at the HS equivalent level there is a larger difference in the sexes among
+the younger demographic whereas at the >HS education level the difference is more
+prominent at older ages. The <HS education level has a higher female total activity level
+at the first but somewhere around the age of 40-50 the total activity levels for both
+sexes become the same and thereafter, the male total activity level is higher. The total
+activity level starts off higher for the younger ages and the <HS level has the greatest
+difference between younger and older people while the >HS has the least.
 
 ```{R}
 covar_accel_long <- covar_accel |>
@@ -101,9 +116,20 @@ ggplot(df_hourly, aes(x = hour, y = activity_level, color = sex)) +
   theme_minimal()
 ```
 
-Q-  Make a three-panel plot that shows the 24-hour activity time courses for each education level and use color to indicate sex. Describe in words any patterns or conclusions you can make based on this graph; including smooth trends may help identify differences.
-
-The less than high school education level and the high school education level do not depict a lot of differences as we can see in the plot. In <HS education level, the male activity level (hourly average) is slightly higher than the female activity level. However, after the 15 hour mark the differences are negligible. In the HS equivalent education level female and male activity level start off almost the same but the female levels increase slightly faster. For the above HS education level the female activity level is slightly higher throughout the 24 hours. If we ignore the trend lines and focus on the points, we find that at first the activity levels are slightly decreasing across all education levels and both sexes. Then they increase and afterwards start decreasing again. 
+Q-  Make a three-panel plot that shows the 24-hour activity time courses for each
+education level and use color to indicate sex. Describe in words any patterns or
+conclusions you can make based on this graph; including smooth trends may help identify
+differences.
+Ans- The less than high school education level and the high school education level do not
+depict a lot of differences as we can see in the plot. In <HS education level, the male
+activity level (hourly average) is slightly higher than the female activity level.
+However, after the 15 hour mark the differences are negligible. In the HS equivalent
+education level female and male activity level start off almost the same but the female
+levels increase slightly faster. For the above HS education level the female activity
+level is slightly higher throughout the 24 hours. If we ignore the trend lines and focus
+on the points, we find that at first the activity levels are slightly decreasing across
+all education levels and both sexes. Then they increase and afterwards start decreasing
+again. 
 
 ```{R}
 #Q3 citibike
@@ -140,7 +166,11 @@ summary(citi_merged)
 ```
 
 Q- describe the resulting dataset
-Ans- We have a dataset with 8 columns. 99,485 rows. Duration is a number while weekdays have been set as a factor. The other variables have been set as characters. The dataset describes the details (time, duration, destination etc.) of the rides taken by someone in NYC via a citibike. The dataset, str() and summary() commands allow us to know more about the data and the details provided.
+Ans- We have a dataset with 8 columns. 99,485 rows. Duration is a number while weekdays
+have been set as a factor. The other variables have been set as characters. The dataset
+describes the details (time, duration, destination etc.) of the rides taken by someone in
+NYC via a citibike. The dataset, str() and summary() commands allow us to know more about
+the data and the details provided.
 
 ```{R}
 table1 = citi_merged |>
@@ -150,9 +180,16 @@ table1 = citi_merged |>
 table1
 ```
 
-Q- Produce a reader-friendly table showing the total number of rides in each combination of year and month separating casual riders and Citi Bike members. Comment on these results.
-Ans- Going off the total number of rides, in Jan 2020- the total casual rides were the least while July 2024 recorded the highest. The same is true for members.The fact that January is lower than July is pretty understandable considering the weather of NYC (cold winters). Even the latest number of rides (July 2024) for casual users was less in total than Citibike members. The proportion of members:users when considering rides has been decreasing over the years as there were 10 times members rides to casual users rides which is not around 3 times.
-
+Q- Produce a reader-friendly table showing the total number of rides in each combination
+of year and month separating casual riders and Citi Bike members. Comment on these
+results.
+Ans- Going off the total number of rides, in Jan 2020- the total casual rides were the
+least while July 2024 recorded the highest. The same is true for members.The fact that
+January is lower than July is pretty understandable considering the weather of NYC (cold
+winters). Even the latest number of rides (July 2024) for casual users was less in total
+than Citibike members. The proportion of members:users when considering rides has been
+decreasing over the years as there were 10 times members rides to casual users rides
+which is not around 3 times.
 
 ```{R}
 table2 = jul24 |>
@@ -175,12 +212,17 @@ ggplot(plot_data, aes(x = weekdays, y = median_duration, color = as.factor(year)
        y = "Median Ride Duration (minutes)",
        color = "Year")
 ```
-Q- Make a plot to investigate the effects of day of the week, month, and year on median ride duration. This plot can include one or more panels, but should facilitate comparison across all variables of interest. Comment on your observations from this plot.
-
-Ans- In 2020, the median duration of how long a bike was used was more than in 2024 for both months especially in July. 
-Seeing the days of the week, we find that the median duration time of the bikes during the weekend decreased quite a bit in 2024 when compared to 2020.This decrease is more profound in July than January.Also for other days, the median duration is less in 2024 than 2020 with bigger difference in July. Something different about the weekend is that Saturdays and Sundays have similar duration in 2020 for both months. However, the duration for Sundays decreases more than Saturdays in 2024.
-
-
+Q- Make a plot to investigate the effects of day of the week, month, and year on median
+ride duration. This plot can include one or more panels, but should facilitate comparison
+across all variables of interest. Comment on your observations from this plot
+Ans- In 2020, the median duration of how long a bike was used was more than in 2024 for
+both months especially in July. 
+Seeing the days of the week, we find that the median duration time of the bikes during
+the weekend decreased quite a bit in 2024 when compared to 2020.This decrease is more
+profound in July than January.Also for other days, the median duration is less in 2024
+than 2020 with bigger difference in July. Something different about the weekend is that
+Saturdays and Sundays have similar duration in 2020 for both months. However, the
+duration for Sundays decreases more than Saturdays in 2024.
 
 ```{R}
 data_2024 = citi_merged |>
@@ -195,10 +237,19 @@ ggplot(data_2024, aes(x = month, y = duration, fill = member_casual)) +
        y = "Ride Duration (minutes)",
        fill = "Membership Status")
 ```
-Q- For data in 2024, make a figure that shows the impact of month, membership status, and bike type on the distribution of ride duration. Comment on your results
 
-Ans- For classic bikes we see that January and July do not show a lot of differences. The box plots are pretty similar for both casual users and members. 
-However, in electric bikes there are some difference between the two months. The ride duration was more in July (for both members and casual users) compared to January. This can be seen by the fact that the boxes are slightly bigger and the median is higher when compared to their counterparts.
-We also see that irrespective of the month and type of bike, casual users use the rideable for a longer time than members which is explained by the median of orange boxes being higher than the blue boxes.
-It is hard to comment on whether classic bikes or electric bikes are used for longer duration. Observing the box plot we can say that classic bikes might be used for slightly longer ride duration.
+Q- For data in 2024, make a figure that shows the impact of month, membership status, and
+bike type on the distribution of ride duration. Comment on your results
+Ans- For classic bikes we see that January and July do not show a lot of differences. The
+box plots are pretty similar for both casual users and members. 
+However, in electric bikes there are some difference between the two months. The ride
+duration was more in July (for both members and casual users) compared to January. This
+can be seen by the fact that the boxes are slightly bigger and the median is higher when
+compared to their counterparts.
+We also see that irrespective of the month and type of bike, casual users use the
+rideable for a longer time than members which is explained by the median of orange boxes
+being higher than the blue boxes.
+It is hard to comment on whether classic bikes or electric bikes are used for longer
+duration. Observing the box plot we can say that classic bikes might be used for slightly
+longer ride duration.
 
