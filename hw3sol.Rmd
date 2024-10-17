@@ -50,7 +50,6 @@ equivalent education than women. It is also important to note that in our tidied
 the number of men is more than the number of women (120 vs 111).
 Through the visulisation we also see that there is one outlier in the >HS data where there are a lot of females at a certain age.
 
-
 ```{R}
 
 accel = read_csv("nhanes_accel.csv") |>
