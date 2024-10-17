@@ -15938,23 +15938,7 @@ jul24 = read_csv("July2024Citi.csv") |>
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-names(jul24)
-```
-
-    ## [1] "ride_id"            "rideable_type"      "weekdays"          
-    ## [4] "duration"           "start_station_name" "end_station_name"  
-    ## [7] "member_casual"      "time"
-
-``` r
-names(jan24)
-```
-
-    ## [1] "ride_id"            "rideable_type"      "weekdays"          
-    ## [4] "duration"           "start_station_name" "end_station_name"  
-    ## [7] "member_casual"      "time"
-
-``` r
-df_list <- list(jan20, jul20, jan24, jul24)
+df_list = list(jan20, jul20, jan24, jul24)
 citi_merged = df_list |>
   reduce(full_join, by = names(jan20)) |>
   mutate(weekdays = as.character(weekdays)) |>

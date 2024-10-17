@@ -145,9 +145,7 @@ jul20 = read_csv("July2020Citi.csv") |>
 jul24 = read_csv("July2024Citi.csv") |>
   janitor::clean_names() |>
   mutate(time = "Jul 2024")
-names(jul24)
-names(jan24)
-df_list <- list(jan20, jul20, jan24, jul24)
+df_list = list(jan20, jul20, jan24, jul24)
 citi_merged = df_list |>
   reduce(full_join, by = names(jan20)) |>
   mutate(weekdays = as.character(weekdays)) |>
