@@ -53,9 +53,6 @@ accel = read_csv("nhanes_accel.csv") |>
   mutate(avg_activity = total_activity/1440)
 accel_t = accel |>
   select(seqn, total_activity, avg_activity)
-accel_t
-accel
-str(accel)
 ```
 
 ```{R}
@@ -70,6 +67,11 @@ ggplot(covar_accel, aes(x = age, y = total_activity, color = sex)) +
        x = "Age",
        y = "Total Activities")
 ```
+Q- Plot these total activities (y-axis) against age (x-axis); your plot should compare men to women and have separate panels for each education level. Include a trend line or a smooth to illustrate differences. Comment on your plot.
+
+Ans- The trend lines in the above plot give us some information (as the points are too scattered). For = and >HS education level the female total activity is more than the male. However, at the HS equivalent level there is a larger difference in the sexes among the younger demographic whereas at the >HS education level the difference is more prominent at older ages. The <HS education level has a higher female total activity level at the first but somewhere around the age of 40-50 the total activity levels for both sexes become the same and thereafter, the male total activity level is higher. The total activity level starts off higher for the younger ages and the <HS level has the greatest difference between younger and older people while the >HS has the least.
+
+
 
 ```{R}
 covar_accel_long <- covar_accel |>
@@ -100,6 +102,8 @@ ggplot(df_hourly, aes(x = hour, y = activity_level, color = sex)) +
 ```
 
 Q-  Make a three-panel plot that shows the 24-hour activity time courses for each education level and use color to indicate sex. Describe in words any patterns or conclusions you can make based on this graph; including smooth trends may help identify differences.
+
+The less than high school education level and the high school education level do not depict a lot of differences as we can see in the plot. In <HS education level, the male activity level (hourly average) is slightly higher than the female activity level. However, after the 15 hour mark the differences are negligible. In the HS equivalent education level female and male activity level start off almost the same but the female levels increase slightly faster. For the above HS education level the female activity level is slightly higher throughout the 24 hours. If we ignore the trend lines and focus on the points, we find that at first the activity levels are slightly decreasing across all education levels and both sexes. Then they increase and afterwards start decreasing again. 
 
 ```{R}
 #Q3 citibike
